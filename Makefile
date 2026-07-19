@@ -1,4 +1,4 @@
-API ?= 35
+API ?= 36
 TARGET ?= pa3q-S938NKSUACZF1
 OUTDIR ?= build/$(TARGET)
 
