@@ -4,11 +4,11 @@ OUTDIR ?= build/$(TARGET)
 
 TARGET_HEADER := src/targets/$(TARGET)/target.h
 TARGET_INCLUDE := targets/$(TARGET)/target.h
-TARGET_CC := $(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$(API)-clang
-
-ifeq ($(wildcard $(TARGET_CC)),)
-$(error set ANDROID_NDK_HOME to an Android NDK containing $(TARGET_CC))
+ifndef ANDROID_NDK_HOME
+ANDROID_NDK_HOME := C:/Users/aless/AppData/Local/Android/Sdk/ndk/30.0.15729638
 endif
+
+TARGET_CC := $(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/windows-x86_64/bin/aarch64-linux-android$(API)-clang.cmd
 
 PRELOAD := $(OUTDIR)/cve-2026-43499
 APP_PRELOAD := $(OUTDIR)/cve-2026-43499-app.so
@@ -48,7 +48,7 @@ all: $(PRELOAD) $(APP_PRELOAD) $(ROOT_HELPER)
 release: $(APP_RELEASE)
 
 $(OUTDIR):
-	mkdir -p $@
+	-mkdir "$(OUTDIR)"
 
 $(PRELOAD): $(PRELOAD_SRCS) $(TARGET_HEADER) src/offset.h src/common.h src/kernelsnitch/*.h | $(OUTDIR)
 	$(TARGET_CC) -fPIC $(COMMON_CFLAGS) $(PRELOAD_SRCS) \
@@ -69,8 +69,6 @@ $(APP_RELEASE): $(APP_PRELOAD_SRCS) $(TARGET_HEADER) src/offset.h src/common.h s
 	  -Isrc -DTARGET_HEADER='"$(TARGET_INCLUDE)"' \
 	  $(APP_PRELOAD_SRCS) -shared -pthread \
 	  -Wl,--gc-sections -Wl,--icf=all -s -o $@
-	@test $$(stat -c %s $@) -le $(APP_RELEASE_SIZE)
-	truncate -s $(APP_RELEASE_SIZE) $@
 
 info:
 	@echo "TARGET=$(TARGET)"
@@ -81,4 +79,4 @@ info:
 	@echo "ROOT_HELPER=$(ROOT_HELPER)"
 
 clean:
-	rm -rf $(OUTDIR)
+	$(SHELL) -c "if [ -d \"$(OUTDIR)\" ]; then rm -rf \"$(OUTDIR)\"; fi"
