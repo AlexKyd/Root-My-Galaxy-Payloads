@@ -37,7 +37,7 @@
       "buildFingerprint": "samsung/m3qxeea/m3q:16/BP4A.251205.006/S948BXXU1AZCF_OXM1AZCF:user/release-keys",
       "sdk": 36,
       "abi": "arm64-v8a",
-      "pageSize": 16386,
+      "pageSize": 4096,
       "exploit": {
         "url": "https://raw.githubusercontent.com/AlexKyd/Root-My-Galaxy-Payloads/main/artifacts/p23f-S948BXXU1AZCF/cve-2026-43499-app.so",
         "size": 75816
