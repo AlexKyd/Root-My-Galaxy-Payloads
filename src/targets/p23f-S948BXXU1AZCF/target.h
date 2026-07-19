@@ -1,7 +1,12 @@
 #ifndef OFFSET_H
 #define OFFSET_H
 
-#define BUILD_VARIANT_LABEL "p23f_S948BXXU1AZCF"
+#if defined(APP_PAYLOAD) && APP_PAYLOAD
+#define BUILD_VARIANT_LABEL "p23f-S948BXXU1AZCF-app-physical-p0-oracle"
+#define APP_PHYS_P0_ORACLE 1
+#else
+#define BUILD_VARIANT_LABEL "p23f-S948BXXU1AZCF-root-umh"
+#endif
 #ifndef BUILD_FINGERPRINT
 #define BUILD_FINGERPRINT "samsung/m3qxeea/m3q:16/BP4A.251205.006/S948BXXU1AZCF_OXM1AZCF:user/release-keys"
 #endif
